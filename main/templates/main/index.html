@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wikipedia Search</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            color: #333;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            height: 90vh;
+            max-width: 1200px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .left, .right {
+            padding: 20px;
+        }
+        .left {
+            background: #007BFF;
+            color: white;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInLeft 1s ease-in-out;
+            position: relative;
+        }
+        .left-header {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .left-header img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .left-header h2 {
+            margin: 0;
+            font-size: 1.2em; /* Adjusted font size */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .left h1 {
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+        .left form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .left input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            outline: none;
+        }
+        .left button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #ff6f61;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .left button:hover {
+            background: #ff8566;
+        }
+        .right {
+            flex: 2;
+            background: #f9f9f9;
+            overflow-y: auto;
+            animation: fadeInRight 1s ease-in-out;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+            line-height: 1.6;
+        }
+        .result h2 {
+            margin-top: 0;
+            color: #007BFF;
+        }
+        .result ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin: 0;
+        }
+        .result ul li {
+            margin-bottom: 10px;
+        }
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="left-header">
+                <img src="{% static 'main/logo.png' %}" alt="Logo">
+                <h2>Maharaja Institute Of Technology</h2>
+            </div>
+            <h1>Wikipedia Search</h1>
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="search" placeholder="Enter search term">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="right">
+            {% if result %}
+                <div class="result">
+                    <h2>Search Results</h2>
+                    <ul>
+                        {% for item in result %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
